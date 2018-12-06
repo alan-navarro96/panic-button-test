@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_settings -> {
-
+//                message.setText(R.string.title_settings)
                 createFragment(R.id.navigation_settings)
                 return@OnNavigationItemSelectedListener true
             }

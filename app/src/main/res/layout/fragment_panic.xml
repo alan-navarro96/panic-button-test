@@ -11,5 +11,16 @@
             android:layout_height="match_parent"
             android:text="@string/title_panic"
             android:textSize="24sp"/>
+    <Button
+            android:text="@string/label_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_show_map"/>
+
+    <com.google.android.gms.maps.MapView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/map"
+    />
 
 </FrameLayout>
