@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
+
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+              android:orientation="vertical"
              tools:context=".Panic">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/title_panic"
-            android:textSize="24sp"/>
-    <Button
-            android:text="@string/label_map"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/button_show_map"/>
 
     <com.google.android.gms.maps.MapView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".60"
             android:id="@+id/map"
     />
 
-</FrameLayout>
+    <Button
+            android:text="@string/label_alert"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight=".20"
+            android:id="@+id/button_alert"/>
+
+    <Button
+            android:text="@string/label_record"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight=".20"
+            android:id="@+id/button_record"/>
+
+</LinearLayout>
