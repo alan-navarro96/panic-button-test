@@ -15,10 +15,18 @@ import android.content.Intent
 import android.widget.TextView
 import android.R.attr.data
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
 import com.twitter.sdk.android.core.TwitterAuthToken
 import com.twitter.sdk.android.core.TwitterCore
+import com.twitter.sdk.android.core.services.StatusesService
 import kotlinx.android.synthetic.main.fragment_settings.*
+import com.twitter.sdk.android.core.TwitterApiClient
+import com.twitter.sdk.android.core.models.Tweet
+
+
+
+
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -63,6 +71,8 @@ class SettingsFragment : Fragment() {
 
 
                 (login_display as TextView).text = "worked"
+
+                (post_tweet as Button).visibility = View.VISIBLE
 //                        "User Name:" + userName +
 //                        "\nUser ID: " + userID +
 //                        "\nToken Key: " + token +
@@ -76,6 +86,29 @@ class SettingsFragment : Fragment() {
                 Toast.makeText(context!!, "Fallada conexion a Twitter", Toast.LENGTH_SHORT).show()
             }
         })
+
+        post_tweet.setOnClickListener{
+
+
+            val twitterApiClient = TwitterCore.getInstance().apiClient
+            val statusesService = twitterApiClient.statusesService
+            Log.e("test", "Here")
+
+            Log.e("test", "pass")
+
+            val call = statusesService.update("lol", null, null, null, null, null, null, null , null)
+            call.enqueue(object : Callback<Tweet>() {
+                override fun success(result: Result<Tweet>) {
+                    Toast.makeText(context!!, "Exitosa publicacion a Twitter", Toast.LENGTH_SHORT).show()
+                    Log.e("post", "Correct")
+                }
+
+                override fun failure(exception: TwitterException) {
+                    Toast.makeText(context!!, "Fallada publicacion a Twitter", Toast.LENGTH_SHORT).show()
+                    Log.e("post", "Incorrect")
+                }
+            })
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
