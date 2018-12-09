@@ -18,9 +18,15 @@ import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.location.Criteria
 import android.location.LocationManager
 import android.telephony.SmsManager
+import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.twitter.sdk.android.core.Callback
+import com.twitter.sdk.android.core.Result
+import com.twitter.sdk.android.core.TwitterCore
+import com.twitter.sdk.android.core.TwitterException
+import com.twitter.sdk.android.core.models.Tweet
 import kotlinx.android.synthetic.main.fragment_panic.*
 import java.util.jar.Manifest
 
@@ -74,7 +80,7 @@ class Panic : Fragment(), OnMapReadyCallback {
                 ActivityCompat.requestPermissions(activity!!,
                     arrayOf(android.Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_REQUEST_CODE)
             } else {
-                sendSMS()
+                sendPanicAlert()
             }
         }
     }
@@ -117,14 +123,47 @@ class Panic : Fragment(), OnMapReadyCallback {
         }
     }
 
-    fun sendSMS() {
+    fun sendPanicAlert() {
+        if (ActivityCompat.checkSelfPermission(context!!,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity!!,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+            return
+        }
+
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            // Got last known location. In some rare situations this can be null.
+            // 3
+            if (location != null) {
+                val positionURL = "https://www.google.com/maps/search/?api=1&query=" + location.latitude + "," + location.longitude
+                val message = "[test] SOS de panico: " + positionURL
+                sendSMS("3166172464", message)
+                postTweet(message)
+            }
+        }
+    }
+
+    fun sendSMS(number: String, message: String) {
 //        val number = "3012189158"
-        val number = "3166172464"
-        val text = "lol"
+        SmsManager.getDefault().sendTextMessage(number, null, message, null, null)
+//        Toast.makeText(context!!, "SMS sent.", Toast.LENGTH_SHORT).show()
+    }
 
-        SmsManager.getDefault().sendTextMessage(number, null, text, null, null)
+    fun postTweet(message: String) {
+        val twitterApiClient = TwitterCore.getInstance().apiClient
+        val statusesService = twitterApiClient.statusesService
+        val call = statusesService.update(message, null, null, null, null, null, null, null , null)
+        call.enqueue(object : Callback<Tweet>() {
+            override fun success(result: Result<Tweet>) {
+                Toast.makeText(context!!, "Exitosa publicacion a Twitter", Toast.LENGTH_SHORT).show()
+                Log.e("post", "Correct")
+            }
 
-        Toast.makeText(context!!, "SMS sent.", Toast.LENGTH_SHORT).show()
+            override fun failure(exception: TwitterException) {
+                Toast.makeText(context!!, "Fallada publicacion a Twitter", Toast.LENGTH_SHORT).show()
+                Log.e("post", "Incorrect")
+            }
+        })
     }
 
 }
