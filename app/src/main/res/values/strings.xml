@@ -6,4 +6,7 @@
     <string name="title_activity_maps">Mapa</string>
     <string name="label_alert">Enviar SOS</string>
     <string name="label_record">Grabar audio</string>
+
+    <string name="com.twitter.sdk.android.CONSUMER_KEY" translatable="false" templateMergeStrategy="preserve">64Aro540sOCKGVEqrP6ELfXD7</string>
+    <string name="com.twitter.sdk.android.CONSUMER_SECRET" translatable="false" templateMergeStrategy="preserve">mGnRMmI3VGBAC8oiGgToGnfAeLY639oBdDw3GZozhEU6zJMGP8</string>
 </resources>
