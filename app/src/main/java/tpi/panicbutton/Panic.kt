@@ -17,9 +17,12 @@ import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.location.Criteria
 import android.location.LocationManager
+import android.telephony.SmsManager
 import android.widget.Toast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import kotlinx.android.synthetic.main.fragment_panic.*
+import java.util.jar.Manifest
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -41,6 +44,7 @@ class Panic : Fragment(), OnMapReadyCallback {
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+        private const val SEND_SMS_PERMISSION_REQUEST_CODE = 2
     }
 
     override fun onCreateView(
@@ -62,6 +66,16 @@ class Panic : Fragment(), OnMapReadyCallback {
             mMapView.onCreate(null)
             mMapView.onResume()
             mMapView.getMapAsync(this)
+        }
+
+        button_alert.setOnClickListener {
+            if (ActivityCompat.checkSelfPermission(context!!,
+                    android.Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(activity!!,
+                    arrayOf(android.Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_REQUEST_CODE)
+            } else {
+                sendSMS()
+            }
         }
     }
 
@@ -101,6 +115,16 @@ class Panic : Fragment(), OnMapReadyCallback {
                 mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 18f))
             }
         }
+    }
+
+    fun sendSMS() {
+//        val number = "3012189158"
+        val number = "3166172464"
+        val text = "lol"
+
+        SmsManager.getDefault().sendTextMessage(number, null, text, null, null)
+
+        Toast.makeText(context!!, "SMS sent.", Toast.LENGTH_SHORT).show()
     }
 
 }
