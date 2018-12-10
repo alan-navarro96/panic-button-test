@@ -36,16 +36,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var numbersToSMS: ArrayList<PhoneNumber>
 
     // broadcast
-    val broadCastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(contxt: Context?, intent: Intent?) {
-            Log.e("intent", "got here")
-            Log.e("intent", intent?.action)
-            when (intent?.action) {
+//    val broadCastReceiver = object : BroadcastReceiver() {
+//        override fun onReceive(contxt: Context?, intent: Intent?) {
+//            Log.e("intent", "got here")
+//            Log.e("intent", intent?.action)
+//            when (intent?.action) {
+//
+//                Telephony.Sms.Intents.SMS_RECEIVED_ACTION -> sendSosAlert()
+//            }
+//        }
+//    }
 
-                Telephony.Sms.Intents.SMS_RECEIVED_ACTION -> sendSosAlert()
-            }
-        }
-    }
+    private lateinit var smsBroadcastReceiver: SmsBroadcastReceiver
+
 
     fun sendSosAlert() {
         Log.e("broadcast receiver", "sms received")
@@ -129,6 +132,15 @@ class MainActivity : AppCompatActivity() {
 
 //        LocalBroadcastManager.getInstance(this)
 //            .registerReceiver(broadCastReceiver, IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION))
+
+
+        smsBroadcastReceiver = SmsBroadcastReceiver()
+        registerReceiver(smsBroadcastReceiver, IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION))
+
+
+        val listener = smsBroadcastReceiver.Listener(this)
+
+        smsBroadcastReceiver.setListener(listener);
     }
 
     fun createFragment(type: Int) {
@@ -158,9 +170,14 @@ class MainActivity : AppCompatActivity() {
         Log.e("worked", "sent to fragment")
     }
 
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        LocalBroadcastManager.getInstance(this)
-//            .unregisterReceiver(broadCastReceiver)
+    override fun onDestroy() {
+        super.onDestroy()
+        LocalBroadcastManager.getInstance(this)
+            .unregisterReceiver(smsBroadcastReceiver)
+    }
+
+//    fun getData(): String {
+//        return "YES"
 //    }
+
 }

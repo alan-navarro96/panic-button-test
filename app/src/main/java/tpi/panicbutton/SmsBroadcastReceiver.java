@@ -18,14 +18,16 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
 
     private static final String TAG = "SmsBroadcastReceiver";
 
+    private Listener listener;
+
     @Override
     public void onReceive(Context context, Intent intent) {
-//        if (intent.getAction().equals(Telephony.Sms.Intents.SMS_RECEIVED_ACTION)) {
-//            String smsSender = "";
-//            String smsBody = "";
-//            for (SmsMessage smsMessage : Telephony.Sms.Intents.getMessagesFromIntent(intent)) {
-//                smsBody += smsMessage.getMessageBody();
-//            }
+        if (intent.getAction().equals(Telephony.Sms.Intents.SMS_RECEIVED_ACTION)) {
+            String smsSender = "";
+            String smsBody = "";
+            for (SmsMessage smsMessage : Telephony.Sms.Intents.getMessagesFromIntent(intent)) {
+                smsBody += smsMessage.getMessageBody();
+            }
 
 //            if (smsBody.startsWith(SmsHelper.SMS_CONDITION)) {
 //                Log.d(TAG, "Sms with condition detected");
@@ -33,9 +35,30 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
 
             Toast.makeText(context, "Mensaje recibido: ", Toast.LENGTH_LONG).show();
 
-            
+
 //            }
             Log.d(TAG, "SMS detected:");
-//        }
+
+            if (listener != null) {
+                Log.d(TAG, "listener ok");
+//                Log.d(TAG, listener.getData());
+                listener.sendSosAlert();
+            }
+        }
+    }
+
+    void setListener(Listener listener) {
+        this.listener = listener;
+    }
+
+    public class Listener {
+        private MainActivity act;
+        Listener(MainActivity activity) {
+            act = activity;
+        }
+
+        public void sendSosAlert() {
+            act.sendSosAlert();
+        }
     }
 }
