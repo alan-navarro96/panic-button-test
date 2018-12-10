@@ -1,6 +1,9 @@
 package tpi.panicbutton
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.location.Location
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
@@ -15,6 +18,11 @@ import com.twitter.sdk.android.core.TwitterAuthConfig
 import com.twitter.sdk.android.core.DefaultLogger
 import com.twitter.sdk.android.core.TwitterConfig
 import android.content.Intent
+import android.content.IntentFilter
+import android.content.pm.PackageManager
+import android.provider.Telephony
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.LocalBroadcastManager
 import android.widget.Toast
 
 
@@ -26,6 +34,23 @@ class MainActivity : AppCompatActivity() {
     private var lat: Double = 0.0
     private var long: Double = 0.0
     private lateinit var numbersToSMS: ArrayList<PhoneNumber>
+
+    // broadcast
+    val broadCastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(contxt: Context?, intent: Intent?) {
+            Log.e("intent", "got here")
+            Log.e("intent", intent?.action)
+            when (intent?.action) {
+
+                Telephony.Sms.Intents.SMS_RECEIVED_ACTION -> sendSosAlert()
+            }
+        }
+    }
+
+    fun sendSosAlert() {
+        Log.e("broadcast receiver", "sms received")
+        Toast.makeText(this, "SOS enviado", Toast.LENGTH_SHORT).show()
+    }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -74,7 +99,8 @@ class MainActivity : AppCompatActivity() {
         Twitter.initialize(this)
         setContentView(R.layout.activity_main)
 
-        createFragment(R.id.navigation_panic)
+//        createFragment(R.id.navigation_panic)
+        createFragment(R.id.navigation_information)
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 //        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 //        getLocation()
@@ -92,6 +118,17 @@ class MainActivity : AppCompatActivity() {
         Twitter.initialize(config)
 
 
+        if (ActivityCompat.checkSelfPermission(this,       Manifest.permission.RECEIVE_SMS  ) != PackageManager.PERMISSION_GRANTED ||
+            ActivityCompat.checkSelfPermission(this,       Manifest.permission.READ_SMS  ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS), 0)
+
+        }
+
+//        LocalBroadcastManager.getInstance(this)
+//            .registerReceiver(broadCastReceiver, IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION))
     }
 
     fun createFragment(type: Int) {
@@ -120,4 +157,10 @@ class MainActivity : AppCompatActivity() {
         fragment?.onActivityResult(requestCode, resultCode, data)
         Log.e("worked", "sent to fragment")
     }
+
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        LocalBroadcastManager.getInstance(this)
+//            .unregisterReceiver(broadCastReceiver)
+//    }
 }
