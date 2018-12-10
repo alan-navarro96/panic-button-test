@@ -131,18 +131,4 @@ class Panic : Fragment(), OnMapReadyCallback {
         }
     }
 
-    fun sendSmsToAllContacts(message: String) {
-        var act = (activity as MainActivity)
-        var numbers = act.getSmsNumbers()
-        numbers.forEach { phone ->
-            Log.e("Message to", phone.number)
-//            sendSMS(phone.number, message)
-        }
-    }
-
-    fun sendSMS(number: String, message: String) {
-        SmsManager.getDefault().sendTextMessage(number, null, message, null, null)
-//        Toast.makeText(context!!, "SMS sent.", Toast.LENGTH_SHORT).show()
-    }
-
 }

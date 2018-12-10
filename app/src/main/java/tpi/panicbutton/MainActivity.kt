@@ -19,6 +19,7 @@ import android.content.pm.PackageManager
 import android.provider.Telephony
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.LocalBroadcastManager
+import android.telephony.SmsManager
 import android.widget.Toast
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.models.Tweet
@@ -56,10 +57,22 @@ class MainActivity : AppCompatActivity() {
     fun sendSosAlert() {
 //        Log.e("broadcast receiver", "sms received")
 //        Toast.makeText(this, "SOS enviado", Toast.LENGTH_SHORT).show()
-//        sendSmsToAllContacts()
+        sendSmsToAllContacts(locationMessage)
         postTweet(locationMessage)
 
 
+    }
+
+    fun sendSmsToAllContacts(message: String) {
+        numbersToSMS.forEach { phone ->
+            Log.e("Message to", phone.number)
+            sendSMS(phone.number, message)
+        }
+    }
+
+    fun sendSMS(number: String, message: String) {
+        SmsManager.getDefault().sendTextMessage(number, null, message, null, null)
+//        Toast.makeText(context!!, "SMS sent.", Toast.LENGTH_SHORT).show()
     }
 
     fun postTweet(message: String) {

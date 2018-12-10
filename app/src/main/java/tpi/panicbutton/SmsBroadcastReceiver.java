@@ -33,7 +33,7 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
 //                Log.d(TAG, "Sms with condition detected");
 
 
-            Toast.makeText(context, "Mensaje recibido: ", Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, "Mensaje recibido: ", Toast.LENGTH_LONG).show();
 
 
 //            }
