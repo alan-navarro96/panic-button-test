@@ -7,6 +7,12 @@
     <string name="label_alert">Enviar SOS</string>
     <string name="label_record">Grabar audio</string>
 
+    <!-- Strings for the settings fragment -->
+
+    <string name="label_send_to_numbers">Enviar mensajes a los siguientes numeros:</string>
+    <string name="label_add_number">Agregar numero</string>
+    <string name="label_type_number">Escriba numero de telefono</string>
+
     <string name="com.twitter.sdk.android.CONSUMER_KEY" translatable="false" templateMergeStrategy="preserve">64Aro540sOCKGVEqrP6ELfXD7</string>
     <string name="com.twitter.sdk.android.CONSUMER_SECRET" translatable="false" templateMergeStrategy="preserve">mGnRMmI3VGBAC8oiGgToGnfAeLY639oBdDw3GZozhEU6zJMGP8</string>
 </resources>

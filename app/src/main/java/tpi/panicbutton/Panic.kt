@@ -137,14 +137,22 @@ class Panic : Fragment(), OnMapReadyCallback {
             if (location != null) {
                 val positionURL = "https://www.google.com/maps/search/?api=1&query=" + location.latitude + "," + location.longitude
                 val message = "[test] SOS de panico: " + positionURL
-                sendSMS("3166172464", message)
+                sendSmsToAllContacts(message)
                 postTweet(message)
             }
         }
     }
 
+    fun sendSmsToAllContacts(message: String) {
+        var act = (activity as MainActivity)
+        var numbers = act.getSmsNumbers()
+        numbers.forEach { phone ->
+            Log.e("Message to", phone.number)
+//            sendSMS(phone.number, message)
+        }
+    }
+
     fun sendSMS(number: String, message: String) {
-//        val number = "3012189158"
         SmsManager.getDefault().sendTextMessage(number, null, message, null, null)
 //        Toast.makeText(context!!, "SMS sent.", Toast.LENGTH_SHORT).show()
     }

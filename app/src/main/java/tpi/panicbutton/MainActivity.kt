@@ -15,9 +15,7 @@ import com.twitter.sdk.android.core.TwitterAuthConfig
 import com.twitter.sdk.android.core.DefaultLogger
 import com.twitter.sdk.android.core.TwitterConfig
 import android.content.Intent
-
-
-
+import android.widget.Toast
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,6 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     private var lat: Double = 0.0
     private var long: Double = 0.0
+    private lateinit var numbersToSMS: ArrayList<PhoneNumber>
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -48,28 +47,29 @@ class MainActivity : AppCompatActivity() {
         }
         false
     }
-    @SuppressLint("MissingPermission")
-    public fun getLocation() {
 
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location: Location? ->
-                if (location != null) {
-                    lat = location!!.latitude
-                    long = location!!.longitude
-                }
-            }
+    public fun getSmsNumbers(): ArrayList<PhoneNumber> {
+        return numbersToSMS
     }
 
-    public fun getLat(): Double {
-        return lat
+    public fun validatePhoneNumber(number: String): Boolean {
+        if (number.length != 10) return false
+        return number.matches("\\d+".toRegex())
     }
 
-    public fun getLong(): Double {
-        return long
+    public fun addSmsNumber(number: String) {
+        if (!validatePhoneNumber(number)) {
+            Toast.makeText(this, "Error en el numero", Toast.LENGTH_SHORT).show()
+            return
+        }
+        numbersToSMS.add(PhoneNumber(number))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        numbersToSMS = ArrayList<PhoneNumber>()
+        numbersToSMS.add(PhoneNumber("3166172464")) // "3012189158"
 
         Twitter.initialize(this)
         setContentView(R.layout.activity_main)

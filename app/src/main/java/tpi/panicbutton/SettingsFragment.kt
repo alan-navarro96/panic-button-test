@@ -23,10 +23,12 @@ import com.twitter.sdk.android.core.services.StatusesService
 import kotlinx.android.synthetic.main.fragment_settings.*
 import com.twitter.sdk.android.core.TwitterApiClient
 import com.twitter.sdk.android.core.models.Tweet
-
-
-
-
+import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
+import android.content.Context.INPUT_METHOD_SERVICE
+import android.support.v4.content.ContextCompat.getSystemService
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.widget.LinearLayout
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -57,6 +59,20 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val recyclerView = recyclerview_phonenumbers as RecyclerView
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayout.VERTICAL, false)
+
+        val adapter = CustomAdapter(getNumbers())
+
+        recyclerView.adapter = adapter
+
+        add_number_button.setOnClickListener {
+            var act = (activity as MainActivity)
+            act.addSmsNumber(type_number_editText.text.toString())
+            adapter.notifyDataSetChanged()
+        }
+
         loginButton = login_button as TwitterLoginButton
         loginButton.setCallback(object : Callback<TwitterSession>() {
             override fun success(result: Result<TwitterSession>) {
@@ -69,14 +85,6 @@ class SettingsFragment : Fragment() {
                 val token = authToken.token
                 val secret = authToken.secret
 
-
-                (login_display as TextView).text = "worked"
-
-//                        "User Name:" + userName +
-//                        "\nUser ID: " + userID +
-//                        "\nToken Key: " + token +
-//                        "\nT.Secret: " + secret
-
                 Log.e("worked", "showing toast")
                 Toast.makeText(context!!, "Exitosa conexion a Twitter", Toast.LENGTH_SHORT).show()
             }
@@ -85,6 +93,21 @@ class SettingsFragment : Fragment() {
                 Toast.makeText(context!!, "Fallada conexion a Twitter", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+//    fun updateListOfPhones() {
+//        list_numbers.text = getNumbersAsText()
+//    }
+
+//    fun getNumbersAsText(): String {
+//        var act = (activity as MainActivity)
+//        var numbers = act.getSmsNumbers()
+//        return numbers.joinToString("\n")
+//    }
+
+    fun getNumbers(): ArrayList<PhoneNumber> {
+        var act = (activity as MainActivity)
+        return act.getSmsNumbers()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
