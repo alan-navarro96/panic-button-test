@@ -12,11 +12,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.twitter.sdk.android.core.Twitter
 import kotlinx.android.synthetic.main.activity_main.*
-import com.twitter.sdk.android.core.TwitterAuthConfig
-import com.twitter.sdk.android.core.DefaultLogger
-import com.twitter.sdk.android.core.TwitterConfig
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
@@ -24,6 +20,8 @@ import android.provider.Telephony
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.widget.Toast
+import com.twitter.sdk.android.core.*
+import com.twitter.sdk.android.core.models.Tweet
 
 
 class MainActivity : AppCompatActivity() {
@@ -31,8 +29,8 @@ class MainActivity : AppCompatActivity() {
     val manager = supportFragmentManager
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    private var lat: Double = 0.0
-    private var long: Double = 0.0
+    private lateinit var locationMessage: String
+
     private lateinit var numbersToSMS: ArrayList<PhoneNumber>
 
     // broadcast
@@ -50,9 +48,35 @@ class MainActivity : AppCompatActivity() {
     private lateinit var smsBroadcastReceiver: SmsBroadcastReceiver
 
 
+    fun setLocationMessage(message: String) {
+        locationMessage = message
+        Log.e("locationLoading", "location loaded correctly")
+    }
+
     fun sendSosAlert() {
-        Log.e("broadcast receiver", "sms received")
-        Toast.makeText(this, "SOS enviado", Toast.LENGTH_SHORT).show()
+//        Log.e("broadcast receiver", "sms received")
+//        Toast.makeText(this, "SOS enviado", Toast.LENGTH_SHORT).show()
+//        sendSmsToAllContacts()
+        postTweet(locationMessage)
+
+
+    }
+
+    fun postTweet(message: String) {
+        val twitterApiClient = TwitterCore.getInstance().apiClient
+        val statusesService = twitterApiClient.statusesService
+        val call = statusesService.update(message, null, null, null, null, null, null, null , null)
+        call.enqueue(object : Callback<Tweet>() {
+            override fun success(result: Result<Tweet>) {
+                Toast.makeText(applicationContext, "Exitosa publicacion a Twitter", Toast.LENGTH_SHORT).show()
+                Log.e("post", "Correct")
+            }
+
+            override fun failure(exception: TwitterException) {
+                Toast.makeText(applicationContext, "Fallada publicacion a Twitter", Toast.LENGTH_SHORT).show()
+                Log.e("post", "Incorrect")
+            }
+        })
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -102,8 +126,8 @@ class MainActivity : AppCompatActivity() {
         Twitter.initialize(this)
         setContentView(R.layout.activity_main)
 
-//        createFragment(R.id.navigation_panic)
-        createFragment(R.id.navigation_information)
+        createFragment(R.id.navigation_panic)
+//        createFragment(R.id.navigation_information)
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 //        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 //        getLocation()

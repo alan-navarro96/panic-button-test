@@ -80,7 +80,9 @@ class Panic : Fragment(), OnMapReadyCallback {
                 ActivityCompat.requestPermissions(activity!!,
                     arrayOf(android.Manifest.permission.SEND_SMS), SEND_SMS_PERMISSION_REQUEST_CODE)
             } else {
-                sendPanicAlert()
+//                sendPanicAlert()
+                var act = (activity as MainActivity)
+                act.sendSosAlert()
             }
         }
     }
@@ -118,27 +120,13 @@ class Panic : Fragment(), OnMapReadyCallback {
             if (location != null) {
 //                lastLocation = location
                 val currentLatLng = LatLng(location.latitude, location.longitude)
-                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 18f))
-            }
-        }
-    }
 
-    fun sendPanicAlert() {
-        if (ActivityCompat.checkSelfPermission(context!!,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity!!,
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
-            return
-        }
-
-        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-            // Got last known location. In some rare situations this can be null.
-            // 3
-            if (location != null) {
                 val positionURL = "https://www.google.com/maps/search/?api=1&query=" + location.latitude + "," + location.longitude
                 val message = "[test] SOS de panico: " + positionURL
-                sendSmsToAllContacts(message)
-                postTweet(message)
+                var act = (activity as MainActivity)
+                act.setLocationMessage(message)
+
+                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 18f))
             }
         }
     }
@@ -155,23 +143,6 @@ class Panic : Fragment(), OnMapReadyCallback {
     fun sendSMS(number: String, message: String) {
         SmsManager.getDefault().sendTextMessage(number, null, message, null, null)
 //        Toast.makeText(context!!, "SMS sent.", Toast.LENGTH_SHORT).show()
-    }
-
-    fun postTweet(message: String) {
-        val twitterApiClient = TwitterCore.getInstance().apiClient
-        val statusesService = twitterApiClient.statusesService
-        val call = statusesService.update(message, null, null, null, null, null, null, null , null)
-        call.enqueue(object : Callback<Tweet>() {
-            override fun success(result: Result<Tweet>) {
-                Toast.makeText(context!!, "Exitosa publicacion a Twitter", Toast.LENGTH_SHORT).show()
-                Log.e("post", "Correct")
-            }
-
-            override fun failure(exception: TwitterException) {
-                Toast.makeText(context!!, "Fallada publicacion a Twitter", Toast.LENGTH_SHORT).show()
-                Log.e("post", "Incorrect")
-            }
-        })
     }
 
 }
