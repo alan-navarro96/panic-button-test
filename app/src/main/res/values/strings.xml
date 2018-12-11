@@ -7,6 +7,39 @@
     <string name="label_alert">Enviar SOS</string>
     <string name="label_record">Grabar audio</string>
 
+    <string name="information_description">
+        La ciudadanía en general y las mujeres víctimas de violencias, pueden  solicitar que los hechos sean investigados y el agresor sea juzgado y castigado.
+        /n/n
+        Se puede acudir a asistencia jurídica gratuita y especializada a través del sistema de defensoría pública de la Defensoría del Pueblo.
+        \n\n
+        Los casos de violencias se pueden denunciar en:
+        \n\n
+        CAVIF: Centro de Atención e Investigación Integral contra la Violencia Intrafamiliar. Cra 13 #18 -38 piso 2
+        \n\n
+        CAIVAS: Centro de Atención e Investigación Integral a las Víctimas de Delitos Sexuales. Diagonal 34 #05 -18
+        \n\n
+        Comisarías de Familia. Cra 71 #73a -44 piso 2
+        \n\n
+        URI –Unidades de Reacción inmediata Cra 78#77ª - 62
+        \n\n
+        SAU -Salas de Atención al Usuario Cra 71 #73a -44 piso 3
+        \n\n
+        Policía y Policía judicial: Oficina de quejas y contravenciones Cra 78ª #70 -54
+        \n\n
+        Personería Cra 71 #73a -44 piso 4
+        \n\n
+        Defensoría calle 55 # 10 -32
+        \n\n
+        ICBF Cra 103 #73-13
+        \n\n
+        DIJIN
+        \n\n
+        SIJIN
+        \n\n
+        CTI
+        \n\n\n\n\n
+    </string>
+
     <!-- Strings for the settings fragment -->
 
     <string name="label_send_to_numbers">Enviar mensajes a los siguientes numeros:</string>

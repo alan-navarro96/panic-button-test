@@ -19,12 +19,6 @@
             android:layout_height="wrap_content" />
 
     <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:id="@+id/login_display"
-            android:textSize="20sp"/>
-    <TextView
             android:text="@string/label_send_to_numbers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,13 +29,6 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:id="@+id/recyclerview_phonenumbers"/>
-
-    <TextView
-            android:text=""
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/list_numbers"
-            android:textSize="20sp"/>
 
     <EditText
             android:layout_width="match_parent"
@@ -55,7 +42,10 @@
             android:text="@string/label_add_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/add_number_button"/>
+            android:id="@+id/add_number_button"
+            android:background="@color/colorAccent"
+            android:textColor="@color/white"
+    />
 
 
 </LinearLayout>

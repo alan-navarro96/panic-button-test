@@ -10,22 +10,20 @@
     <com.google.android.gms.maps.MapView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".60"
+            android:layout_weight=".70"
             android:id="@+id/map"
     />
 
-    <Button
-            android:text="@string/label_alert"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight=".20"
-            android:id="@+id/button_alert"/>
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight=".30">
 
-    <Button
-            android:text="@string/label_record"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight=".20"
-            android:id="@+id/button_record"/>
+        <Button
+                android:text="@string/label_alert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/button_alert"
+                android:background="@drawable/style_circular_button"
+                android:textColor="@color/white"
+                android:layout_centerHorizontal="true" android:layout_alignParentTop="true"/>
+    </RelativeLayout>
 
 </LinearLayout>
