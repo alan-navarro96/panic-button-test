@@ -109,6 +109,11 @@ class MainActivity : AppCompatActivity() {
                 createFragment(R.id.navigation_settings)
                 return@OnNavigationItemSelectedListener true
             }
+            R.id.navigation_recording -> {
+//                message.setText(R.string.title_settings)
+                createFragment(R.id.navigation_recording)
+                return@OnNavigationItemSelectedListener true
+            }
         }
         false
     }
@@ -187,6 +192,8 @@ class MainActivity : AppCompatActivity() {
             fragment = Panic()
         } else if (type == R.id.navigation_information) {
             fragment = Information()
+        } else if (type == R.id.navigation_recording) {
+            fragment = RecordActivity()
         } else {
             fragment = SettingsFragment()
         }

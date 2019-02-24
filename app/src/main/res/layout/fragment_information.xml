@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".Information">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+              tools:context=".Information">
 
     <!--<TextView-->
             <!--android:layout_width="match_parent"-->
@@ -13,16 +13,14 @@
     <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="match_parent"
                       android:orientation="vertical">
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/information_description"
                     android:textSize="20sp"/>
-            <ImageView android:layout_width="match_parent" android:layout_height="wrap_content"
-                       android:src="@drawable/entities"
-            />
         </LinearLayout>
     </ScrollView>
 
